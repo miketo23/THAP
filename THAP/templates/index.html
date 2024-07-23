@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MVP</title>
+  <style>
+    body {
+      background-color: white;
+      text-align: center;
+      font-family: Tahoma, sans-serif;
+      color: #052c57;
+    }
+    .titleBar {
+      display: flex;
+      flex-direction: row;
+      gap: 300px;
+      align-items: center;
+      justify-content: center;
+      background-color: #F0F8FF;
+    }
+    h1, h3 {
+      font-size: 30px;
+    }
+    h1 {
+      color: #063970;
+    }
+    h3 {
+      color: #052c57;
+    }
+    #donateButton {
+      font-size: 20px;
+      font-weight: bold;
+      letter-spacing: 0.05rem;
+      border: none;
+      padding: 10px;
+      background-color: #0E1822;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s ease-in;
+      border-radius: 10px;
+    }
+    #donateButton:hover {
+      border: 5px solid #e28743;
+      background-position: 40%;
+    }
+    .mapRedirectButtons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .mapRedirectButtons button {
+      padding: 10px 20px;
+      font-size: 15px;
+      font-weight: bold;
+      letter-spacing: 0.05rem;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s ease-in;
+      border-radius: 10px;
+    }
+    #lookingForFood {
+      background-color: #e28743;
+      color: white;
+    }
+    #lookingToDonate {
+      background-color: #1979a9;
+      color: white;
+    }
+    #lookingForFood:hover, #lookingToDonate:hover {
+      border: 5px solid #052c57;
+    }
+    .dropdown {
+      display: inline-block;
+      position: relative;
+      margin-top: 20px;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 200px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .dropdown-content p {
+      margin: 0;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    .dropbtn {
+      padding: 10px;
+      font-size: 15px;
+      background-color: green;
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      width: 100%;
+      text-align: left;
+    }
+    .dropbtn:hover {
+      background-color: #4CAF50;
+    }
+  </style>
+</head>
+<body>
+  <div class='container'>
+    <div class='titleBar'>
+      <h1>THAP</h1>
+      <h3>Tackling Hunger: America's Problem</h3>
+      <button id='donateButton' onclick='openDonatePage()'>Donate Now!</button>
+    </div>
+    <img src='https://media.npr.org/assets/img/2014/08/15/food-bank_wide-0de4e0a83bb82a7c89733ad1ff2b83000b07d05a.jpg?s=1400&c=100&f=jpeg' alt='Food Bank Image'>
+
+    <div class='mapRedirectButtons'>
+      <button id='lookingForFood' onclick='openMapPage()'>Find Food Near You</button>
+      <button id='lookingToDonate' onclick='openOperatingHours()'>Learn Where You Can Donate</button>
+    </div>
+    
+    <h4>About Us:</h4>
+    <div class="dropdown">
+      <button class="dropbtn" onclick="toggleDropdown('dbText1')">Mission Statement</button>
+      <div class="dropdown-content">
+        <p id="dbText1">Everyone needs nutritious food to thrive. And while people are working hard to provide for themselves and help families, approximately 49 million people - that's one in six people in the U.S. - still relied on food assistance from charities like Feeding America in 2022.</p>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <button class="dropbtn" onclick="toggleDropdown('dbText2')">Info</button>
+      <div class="dropdown-content">
+        <p id="dbText2">This is info about us.</p>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <button class="dropbtn" onclick="toggleDropdown('dbText3')">What We Do</button>
+      <div class="dropdown-content">
+        <p id="dbText3">This is what we do.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function openDonatePage() {
+      window.open('http://127.0.0.1:3000/THAP/templates/donate.html', '_blank');
+    }
+    
+    function openMapPage() {
+      window.open('http://127.0.0.1:3000/THAP/templates/map.html', '_blank');
+    }
+    
+    function openOperatingHours() {
+      window.open('http://127.0.0.1:3000/THAP/templates/info.html', '_blank'); // Replace 'link' with actual link
+    }
+
+    function toggleDropdown(id) {
+      const dbText = document.getElementById(id);
+      const dropbtn = dbText.parentElement.querySelector('.dropbtn');
+
+      if (dbText.style.display === "none" || dbText.style.display === "") {
+        dbText.style.display = "block";
+        dropbtn.style.backgroundColor = "#ff0000";
+      } else {
+        dbText.style.display = "none";
+        dropbtn.style.backgroundColor = "green"; // Reset to original color
+      }
+    }
+  </script>
+
+</body>
+</html>

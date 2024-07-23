@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>MVP</title>
+  <style>
+    body {
+      background-color: white;
+      text-align: center;
+      font-family: Tahoma, sans-serif; /* Added font-family for consistency */
+    }
+    .titleBar {
+      display: flex;
+      flex-direction: row;
+      gap: 300px;
+      align-items: center;
+      justify-content: center;
+      background-color: #F0F8FF;
+    }
+    h1 {
+      font-family: Tahoma, verdana, sans-serif;
+      color: #063970;
+      font-size: 40px;
+    }
+    h3 {
+      font-family: Tahoma, verdana, sans-serif;
+      color: #052c57;
+      font-size: 22.5px;
+    }
+    #donateButton {
+      font-family: Tahoma, sans-serif;
+      color: white;
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: bold;
+      letter-spacing: 0.05rem;
+      border: none;
+      padding: 10px;
+      background-color: #0E1822;
+      transition: 0.3s ease-in;
+      border-radius: 10px;
+    }
+    #donateButton:hover {
+      border: 5px solid #e28743;
+      color: white;
+      background-position: 40%;
+    }
+    h4 {
+      font-family: Tahoma, sans-serif;
+      font-size: 22px;
+      color: #052c57;
+      text-align: center;
+      background-color: white;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Changed to center alignment */
+      font-size: 15px;
+      color: #052c57;
+      margin-top: 20px;
+      width: 300px;
+      padding: 20px;
+      border: 2px solid #052c57;
+      border-radius: 10px;
+      background-color: #f0f0f0;
+      margin: auto;
+    }
+
+    form > * {
+      margin-bottom: 10px;
+    }
+    #greeting {
+      font-size: 15px;
+      color: #052c57;
+    }
+
+    .container2 {
+      background-color: white;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 80%;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class='container'>
+    <div class='titleBar'>
+      <h1>THAP</h1>
+      <h3>Tackling Hunger: America's Problem</h3>
+      <button id='donateButton'>Donate Now!</button>
+    </div>
+    <div class='container2'>
+      <h4>Donate Now!</h4>
+      <form id='nameForm'>
+        <label for='name'>Enter full name:</label>
+        <input type='text' id='name' placeholder='Name' name='name' required>
+        <label for='amount'>Enter donation amount (USD):</label>
+        <input type='number' id='amount' placeholder='Donation Amount' name='amount' min='1' step='any' required>
+        <label for='email'>Enter your email:</label>
+        <input type='email' id='email' placeholder='Email' name='email' required> <!-- Changed type to 'email' -->
+        <input type='submit' value='Submit'>
+      </form>
+      <p id='greeting'>Click to submit the form!</p>
+      <p>Form has been filled out <span id="formCount">0</span> times.</p>
+      <p id="message"></p>
+    </div>
+  </div>
+
+  <script>
+    // Function to handle form submission
+    document.getElementById('nameForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const name = document.getElementById('name').value;
+      const amount = document.getElementById('amount').value;
+      const email = document.getElementById('email').value;
+      const greeting = `Thanks for donating $${amount}, ${name}! You will receive an email shortly on how to pay.`;
+      document.getElementById('greeting').textContent = greeting;
+
+      const url = 'http://127.0.0.1:3000/THAP/templates/signup'; // Corrected the URL to match Flask app endpoint
+
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: name, amount: amount, email: email }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('message').innerText = data.message;
+        document.getElementById('formCount').innerText = data.form_count;
+        if (data.success) {
+          document.getElementById('nameForm').reset();
+          document.getElementById('formCount').innerText = parseInt(document.getElementById('formCount').innerText) + 1; // Update form count
+        }
+      })
+      .catch(error => {
+        console.error('Error submitting form:', error);
+        document.getElementById('message').innerText = 'Error submitting form.';
+      });
+    });
+
+    // Function to open donate page
+    function openDonatePage() {
+      window.open('http://127.0.0.1:3000/THAP/templates/signup', '_blank');
+    }
+
+    // Attach event listener to donate button
+    document.getElementById('donateButton').addEventListener('click', openDonatePage);
+  </script>
+</body>
+</html>
