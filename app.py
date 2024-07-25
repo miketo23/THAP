@@ -15,23 +15,54 @@ def init_db():
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
-                email TEXT UNIQUE NOT NULL
+                email TEXT UNIQUE NOT NULL,
+                amount REAL
             )
             '''
         )
         conn.commit()
+init_db()
 
 # Initialize a counter
 form_count = 0
 
 # Routes
-
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/donate', methods=['GET', 'POST'])
+@app.route('/donate', methods=['POST'])
 def donate():
+    global form_count
+    if request.method == 'POST':
+            data = request.json
+            name = data['name']
+            email = data['email']
+            amount = data['amount']
+
+             # Insert into SQLite database
+            with sqlite3.connect('users.db') as conn:
+                cursor = conn.cursor()
+                cursor.execute(
+                    'INSERT INTO users (name, email, amount) VALUES (?, ?, ?)',
+                    (name, email, amount)
+                )
+                conn.commit()
+
+            form_count +=1
+
+            # Process data and respond with JSON
+            # Insert into database, etc.
+
+            response = {
+                'message': 'Form submitted successfully!',
+                'form_count': form_count,
+                'success': True
+            }
+
+    return jsonify(response)
+
+
     return render_template('donate.html')
 
 @app.route('/map')
@@ -42,30 +73,17 @@ def map():
 def info():
     return render_template('info.html')
 
-@app.route('/signup', methods=['POST'])
-def signup():
-    data = request.json
-    name = data['name']
-    email = data['email']
 
-    # Save form data to database
-    with sqlite3.connect('users.db') as conn:
-        cursor = conn.cursor()
-        cursor.execute(
-            'INSERT INTO users (name, email) VALUES (?, ?)',
-            (name, email)
-        )
-        conn.commit()
-
-    global form_count
-    form_count += 1  # Increment form count
-
-    response = {
-        'message': 'Form submitted successfully!',
-        'form_count': form_count
-    }
-    return jsonify(response)
+@app.route('/users', methods= ['GET'])
+def get_users():
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT name, amount, email FROM users' )
+    users = cursor.fetchall()
+    conn.close()
+    return jsonify([dict(user) for user in users])
 
 if __name__ == '__main__':
     init_db()
     app.run(debug=True)
+
