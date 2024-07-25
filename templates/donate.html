@@ -103,58 +103,69 @@
         <label for='name'>Enter full name:</label>
         <input type='text' id='name' placeholder='Name' name='name' required>
         <label for='amount'>Enter donation amount (USD):</label>
-        <input type='number' id='amount' placeholder='Donation Amount' name='amount' min='1' step='any' required>
+        <input type='number' id='amount' placeholder='Donation Amount' amount='amount' min='0.01' step='any' required>
         <label for='email'>Enter your email:</label>
-        <input type='email' id='email' placeholder='Email' name='email' required> <!-- Changed type to 'email' -->
+        <input type='email' id='email' placeholder='Email' email='email' required> <!-- Changed type to 'email' -->
         <input type='submit' value='Submit'>
       </form>
       <p id='greeting'>Click to submit the form!</p>
-      <p>Form has been filled out <span id="formCount">0</span> times.</p>
+      <p>Form has been filled out <span id="form_count">0</span> times.</p>
       <p id="message"></p>
     </div>
   </div>
 
   <script>
-    // Function to handle form submission
-    document.getElementById('nameForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const name = document.getElementById('name').value;
-      const amount = document.getElementById('amount').value;
-      const email = document.getElementById('email').value;
-      const greeting = `Thanks for donating $${amount}, ${name}! You will receive an email shortly on how to pay.`;
-      document.getElementById('greeting').textContent = greeting;
+document.getElementById('nameForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const name = document.getElementById('name').value;
+    const amount = document.getElementById('amount').value;
+    const email = document.getElementById('email').value;
+    const greeting = `Thanks for donating $${amount}, ${name}! You will receive an email shortly on how to pay.`;
+    document.getElementById('greeting').textContent = greeting;
 
-      const url = 'http://127.0.0.1:3000/THAP/templates/signup'; // Corrected the URL to match Flask app endpoint
 
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name: name, amount: amount, email: email }),
-      })
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById('message').innerText = data.message;
-        document.getElementById('formCount').innerText = data.form_count;
-        if (data.success) {
-          document.getElementById('nameForm').reset();
-          document.getElementById('formCount').innerText = parseInt(document.getElementById('formCount').innerText) + 1; // Update form count
+    fetch('http://127.0.0.1:5000/donate' , {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ name, amount, email}),
+})
+
+.then(response => {
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
+})
+.then(data => {
+    document.getElementById('message').innerText = data.message;
+    if (data.success) {
+        document.getElementById('nameForm').reset();
+        // Update form count
+        const formCountElement = document.getElementById('form_count');
+        if (formCountElement) {
+            formCountElement.innerText = data.form_count;
+        } else {
+            console.error('Element with id "form_count" not found.');
         }
-      })
-      .catch(error => {
-        console.error('Error submitting form:', error);
-        document.getElementById('message').innerText = 'Error submitting form.';
-      });
-    });
+    } else {
+        console.error('Server returned an error: ', data.error);
+    }
+})
+.catch(error => {
+    console.error('Fetch error:', error);
+})});
+
 
     // Function to open donate page
     function openDonatePage() {
-      window.open('http://127.0.0.1:3000/THAP/templates/signup', '_blank');
+      window.open('http://127.0.0.1:3000/THAP/templates/donate', '_blank');
     }
 
     // Attach event listener to donate button
     document.getElementById('donateButton').addEventListener('click', openDonatePage);
   </script>
-</body>
+
+  </body>
 </html>
