@@ -19,14 +19,15 @@
       justify-content: center;
       background-color: #F0F8FF;
     }
-    h1, h3 {
-      font-size: 30px;
-    }
+
     h1 {
       color: #063970;
+      font-size: 40px;
+      justify-content: center;
     }
     h3 {
       color: #052c57;
+      font-size: 30px;
     }
     #donateButton {
       font-size: 20px;
@@ -134,14 +135,14 @@
     <div class="dropdown">
       <button class="dropbtn" onclick="toggleDropdown('dbText2')">Info</button>
       <div class="dropdown-content">
-        <p id="dbText2">This is info about us.</p>
+        <p id="dbText2">We are a group of young entrepreneurs who want to make a start up company. This company aims to fix America's hunger problem step by step.</p>
       </div>
     </div>
 
     <div class="dropdown">
       <button class="dropbtn" onclick="toggleDropdown('dbText3')">What We Do</button>
       <div class="dropdown-content">
-        <p id="dbText3">This is what we do.</p>
+        <p id="dbText3">Our product is build towards both high income and low income people. Before our product low income minority communities struggled to find food and access food bank information and high income communities struggled to dispose of food in an eco friendly way or find ways to make monetary donations to food banks. </p>
       </div>
     </div>
 
@@ -172,6 +173,26 @@
         dropbtn.style.backgroundColor = "green"; // Reset to original color
       }
     }
+
+    const button = document.getElementById('lookingForFood');
+    let clickCount = 0;
+
+    button.addEventListener('click', function() {
+        clickCount++;
+        fetch('/log-button-click', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+        },
+            body: JSON.stringify({ clickCount }),
+    })
+        .then(response => {
+        // Handle response from server if needed
+    })
+        .catch(error => {
+            console.error('Error logging button click:', error);
+    });
+});
   </script>
 
 </body>
