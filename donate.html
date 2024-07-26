@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MVP</title>
+  <style>
+    /* Optional: Some basic styling */
+    body {
+      background-color: white;
+      text-align: center;
+      font-family: Tahoma, sans-serif;
+    }
+    .titleBar {
+      display: flex;
+      flex-direction: row;
+      gap: 300px;
+      align-items: center;
+      justify-content: center;
+      background-color: #F0F8FF;
+    }
+    h1 {
+      font-family: Tahoma, verdana, sans-serif;
+      color: #063970;
+      font-size: 40px;
+    }
+    h3 {
+      font-family: Tahoma, verdana, sans-serif;
+      color: #052c57;
+      font-size: 22.5px;
+    }
+    #donateButton {
+      font-family: Tahoma, sans-serif;
+      color: white;
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: bold;
+      letter-spacing: 0.05rem;
+      border: none;
+      padding: 10px;
+      background-color: #0E1822;
+      transition: 0.3s ease-in;
+      border-radius: 10px;
+    }
+    #donateButton:hover {
+      border: 5px solid #e28743;
+      color: white;
+      background-position: 40%;
+    }
+    h4 {
+      font-family: Tahoma, sans-serif;
+      font-size: 22px;
+      color: #052c57;
+      text-align: center;
+      background-color: white;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    form {
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 15px;
+      color: #052c57;
+      margin-top: 20px;
+      width: 300px;
+      padding: 20px;
+      border: 2px solid #052c57;
+      border-radius: 10px;
+      background-color: #f0f0f0;
+      margin: auto;
+    }
+    .submission-count {
+      margin-top: 10px;
+    }
+
+  
+  </style>
+</head>
+<body>
+  <div class='container'>
+    <div class='titleBar'>
+      <h1><a href="http://127.0.0.1:3000/THAP/templates/index.html">THAP</a></h1>
+      <h3>Tackling Hunger: America's Problem</h3>
+      <button id='donateButton'>Donate or Volunteer Now!</button>
+    </div>
+    <div class='container2'>
+      <h4>Donate or Volunteer Now!</h4>
+      <form id="payment-form">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
+    
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+    
+        <label for="amount">Amount willing to pay:</label><br>
+        <input type="number" id="amount" name="amount" required><br><br>
+    
+        <button type="submit">Submit</button>
+      </form>
+
+  <div class="submission-count">
+    <p>Thanks for submitting to volunteer or donate! We will get to you within 24 hours</p>
+    Submissions so far: <span id="submissionCount">0</span>
+  </div>
+
+  <script>
+    // JavaScript code for handling form submission and count
+    document.getElementById('payment-form').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent the form from submitting
+
+      // Increment submission count
+      let currentCount = parseInt(document.getElementById('submissionCount').innerText);
+      document.getElementById('submissionCount').innerText = currentCount + 1;
+
+      // Optionally, you can reset the form fields after submission
+      this.reset();
+    });
+    function openDonatePage() {
+        window.open('http://127.0.0.1:3000/THAP/templates/donate', '_blank');
+    }
+    
+    // Attach event listener to donate button
+    document.getElementById('donateButton').addEventListener('click', openDonatePage);
+  </script>
+</body>
+</html>
