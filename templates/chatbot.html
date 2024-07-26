@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width = device-width, initial-scale = 1.0'>
+  <title> Food Recipe App </title>
+
+<style>
+  body {
+  background-color: white;
+  font-family: Tahoma, sans-serif;
+  text-align: center;
+  color: black;
+  
+}
+
+#recipe-button {
+  padding: 20px 20px;
+  border-radius: 15px;
+}
+</style>
+</head>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  const recipeContent = document.getElementById('recipe-content');
+  const recipeButton = document.getElementById('recipe-button');
+  
+  const fetchRecipe = async () => {
+    let url = 'https://icanhazdadjoke.com/';
+    const response = await fetch(url,{
+      headers: {'Accept': 'application/json'}
+    });
+
+    const data = await response.json();
+    return data;
+ 
+  };
+  
+  const displayRecipe = async (data) => {
+    recipeContent.textContent = data.recipe;
+  };
+  
+  const newRecipe = async () => {
+    const data = await fetchRecipe();
+    displayRecipe(data);
+  };
+  
+  recipeButton.addEventListener('click', newRecipe);
+
+});
+</script>
+
+<body>
+  <div class = 'container'>
+    <h2> Food Recipe Generator
+    </h2>
+    <p id="recipe-content"> Click the button to see some recipes</p>
+    <button id="recipe-button">Click me!</button>
+  </div>
+</body>
+</html>
