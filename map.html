@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>MVP</title>
+  <link rel='stylesheet' href='style.css'>
+
+  <style>
+    body {
+      background-color: white;
+      text-align: center;
+    }
+    .titleBar {
+      display: flex;
+      flex-direction: row;
+      gap: 300px;
+      align-items: center;
+      justify-content: center;
+      background-color: #F0F8FF;
+    }
+    h1 {
+      font-family: Tahoma, verdana, sans-serif;
+      color: #063970;
+      font-size: 40px;
+    }
+    h3 {
+      font-family: Tahoma, verdana, sans-serif;
+      color: #052c57;
+      font-size: 22.5px;
+    }
+    #donateButton {
+      font-family: Tahoma, sans-serif;
+      color: white;
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: bold;
+      letter-spacing: 0.05rem;
+      border: none;
+      padding: 10px;
+      background-color: #0E1822;
+      transition: 0.3s ease-in;
+      border-radius: 10px;
+    }
+    #donateButton:hover {
+      border: 5px solid #e28743;
+      color: white;
+      background-position: 40%;
+    }
+    .buttonInfo {
+      display: flex;
+      font-family: Trebuchet MS, sans-serif;
+      justify-content: center;
+      gap: 50px;
+    }
+    #infoForFoodButton {
+      text-align: left;
+      flex-wrap: wrap;
+    }
+    #infoForDonateButton {
+      text-align: left;
+      flex-wrap: wrap;
+    }
+    .mapRedirectButtons {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+    }
+    #lookingForFood, #lookingToDonate {
+      font-family: Tahoma, sans-serif;
+      color: white;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: bold;
+      letter-spacing: 0.05rem;
+      border: none;
+      padding: 10px;
+      transition: 0.3s ease-in;
+      border-radius: 10px;
+    }
+    #lookingForFood {
+      background-color: #e28743;
+    }
+    #lookingToDonate {
+      background-color: #1979a9;
+    }
+    #lookingForFood:hover {
+      border: 5px solid #1979a9;
+    }
+    #lookingToDonate:hover {
+      border: 5px solid #e28743;
+    }
+    h4, #aboutUsText {
+      font-family: Tahoma, sans-serif;
+      font-size: 17px;
+      color: #052c57;
+      display: flex;
+      justify-content: center;
+    }
+    h1 {
+      font-family: Tahoma, sans-serif;
+      font-size: 40px;
+      color: #052c57;
+      display: flex;
+      justify-content: center;
+    }
+    iframe {
+      width: 75%;
+      height: 360px;
+    }
+  </style>
+</head>
+<body>
+  <div class='container'>
+    <div class='titleBar'>
+      <h1>THAP</h1>
+      <h3>Tackling Hunger: America's Problem</h3>
+      <button id='donateButton'>Donate Now!</button>
+    </div>
+    <div class='buttonInfo'>
+      <p id='infoForFoodButton'>Find Food Near You: <br>
+        To search this map, click the full screen button on your desktop or mobile device.
+        A full screen version of the map will open.
+        Click the search icon and enter your search terms (borough, organization name, etc) to find food banks near you. <br>
+        If you want the times, use the link below to access the times.
+      </p>
+    </div>
+    <iframe src='https://www.google.com/maps/d/u/0/embed?mid=1SmX1WxaFm1WETsF3Y59aYi-zvFrBSJI' frameborder='0'></iframe>
+  </div>
+
+  <script>
+    // Function to open donate page
+    function openDonatePage() {
+      window.open('http://127.0.0.1:3000/THAP/templates/donate.html', '_blank');
+    }
+
+    // Attach event listener to donate button
+    document.getElementById('donateButton').addEventListener('click', openDonatePage);
+
+    function h1() {
+      window.open('http://127.0.0.1:3000/THAP/templates/index.html', '_blank');
+    }
+  </script>
+</body>
+</html>
