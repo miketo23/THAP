@@ -3,8 +3,8 @@ from flask_cors import CORS
 import sqlite3
 
 app = Flask(__name__)
-CORS(app)
-app.config['SECRET_KEY'] = 'your_secret_key_here'
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+
 
 # Initialize SQLite database
 def init_db():
@@ -34,36 +34,33 @@ def index():
 @app.route('/donate', methods=['POST'])
 def donate():
     global form_count
-    if request.method == 'POST':
-            data = request.json
-            name = data['name']
-            email = data['email']
-            amount = data['amount']
+    data = request.json
+    name = data['name']
+    email = data['email']
+    amount = data['amount']
 
-             # Insert into SQLite database
-            with sqlite3.connect('users.db') as conn:
-                cursor = conn.cursor()
-                cursor.execute(
-                    'INSERT INTO users (name, email, amount) VALUES (?, ?, ?)',
-                    (name, email, amount)
-                )
-                conn.commit()
+    # Insert into SQLite database
+    with sqlite3.connect('users.db') as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            'INSERT INTO users (name, email, amount) VALUES (?, ?, ?)',
+            (name, email, amount)
+        )
+        conn.commit()
 
-            form_count +=1
+    form_count += 1
 
-            # Process data and respond with JSON
-            # Insert into database, etc.
-
-            response = {
-                'message': 'Form submitted successfully!',
-                'form_count': form_count,
-                'success': True
-            }
+    # Process data and respond with JSON
+    response = {
+        'message': 'Form submitted successfully!',
+        'form_count': form_count,
+        'success': True
+    }
 
     return jsonify(response)
 
-
-    return render_template('donate.html')
+if __name__ == '__main__':
+    app.run(debug=True)
 
 @app.route('/map')
 def map():
@@ -73,17 +70,20 @@ def map():
 def info():
     return render_template('info.html')
 
+@app.route('/chatbot')
+def chatbot():
+    return render_template('chatbot.html')
 
-@app.route('/users', methods= ['GET'])
+
+@app.route('/users', methods=['GET'])
 def get_users():
     conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
-    cursor.execute('SELECT name, amount, email FROM users' )
+    cursor.execute('SELECT name, email, amount FROM users')
     users = cursor.fetchall()
     conn.close()
-    return jsonify([dict(user) for user in users])
+    user_list = [{'name': user[0], 'email': user[1], 'amount': user[2]} for user in users]
+    return jsonify(user_list)
 
 if __name__ == '__main__':
-    init_db()
     app.run(debug=True)
-
